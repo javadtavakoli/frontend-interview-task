@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import {Link} from "react-router";
 
 const Header: React.FC = () => {
     const [isDarkMode, setIsDarkMode] = useState<boolean>(localStorage.getItem("darkMode") === 'true');
@@ -12,14 +13,19 @@ const Header: React.FC = () => {
     }, [isDarkMode]);
 
     return (<header className="bg-gray-800 text-white p-4 flex justify-between items-center">
-            <h1 className="text-xl font-bold">Social Feed</h1>
+        <h1 className="text-xl font-bold">Social Feed</h1>
+        <div className={"flex gap-2"}>
+            <Link to={"/marked-posts"}>
+                <button className={"bg-gray-500 px-4 py-2 rounded-md"}>Marked Posts</button>
+            </Link>
             <button
                 onClick={() => setIsDarkMode(!isDarkMode)}
                 className="bg-gray-700 px-4 py-2 rounded-md"
             >
                 {isDarkMode ? "Light Mode" : "Dark Mode"}
             </button>
-        </header>);
+        </div>
+    </header>);
 };
 
 export default Header;

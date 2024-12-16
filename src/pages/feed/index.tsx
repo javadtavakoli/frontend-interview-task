@@ -1,8 +1,8 @@
-import PostCard from "./PostCard";
-import useStore from "../store/useStore";
+import PostCard from "../../components/PostCard.tsx";
+import useStore from "../../store/useStore.ts";
 import {useMemo} from "react";
 
-const Feed: React.FC = () => {
+const FeedPage: React.FC = () => {
     const posts = useStore((state) => state.posts);
     const postCount = useMemo(() => posts.length, [posts]);
 
@@ -24,4 +24,4 @@ const Feed: React.FC = () => {
     );
 };
 
-export default Feed;
+export default FeedPage;
