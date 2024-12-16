@@ -1,6 +1,7 @@
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import useStore from "../store/useStore";
 import ReportModal from "./ReportModal.tsx";
+import { useToast } from "./Toast";
 
 interface PostCardProps {
   id: number;
@@ -20,11 +21,13 @@ const PostCard: React.FC<PostCardProps> = ({
   bookmarked,
 }) => {
   const [isReportModalVisible, setIsReportModalVisible] = useState(false);
+  const toast = useToast();
   const toggleLike = useStore((state) => state.toggleLike);
   const toggleBookmark = useStore((state) => state.toggleBookmark);
-  const reportHandler = () => {
+  const reportHandler = useCallback(() => {
+    toast.addToast("Thanks for reporting.");
     setIsReportModalVisible(false);
-  };
+  }, [toast, setIsReportModalVisible]);
   return (
     <div className="bg-white dark:bg-gray-800 rounded-md shadow-md p-4 mb-4">
       <h2 className="font-bold text-lg">{author}</h2>
@@ -44,7 +47,10 @@ const PostCard: React.FC<PostCardProps> = ({
           {liked ? "Unlike" : "Like"}
         </button>
         <button
-          onClick={() => toggleBookmark(id)}
+          onClick={() => {
+            toggleBookmark(id);
+            toast.addToast("Your changes have been saved.");
+          }}
           className={`px-4 py-2 w-28 rounded ${bookmarked ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700"}`}
         >
           {bookmarked ? "Unmark" : "Mark"}
