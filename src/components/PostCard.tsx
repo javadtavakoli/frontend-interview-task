@@ -1,5 +1,6 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import useStore from "../store/useStore";
+import ReportModal from "./ReportModal.tsx";
 
 interface PostCardProps {
   id: number;
@@ -18,9 +19,12 @@ const PostCard: React.FC<PostCardProps> = ({
   liked,
   bookmarked,
 }) => {
+  const [isReportModalVisible, setIsReportModalVisible] = useState(false);
   const toggleLike = useStore((state) => state.toggleLike);
   const toggleBookmark = useStore((state) => state.toggleBookmark);
-
+  const reportHandler = () => {
+    setIsReportModalVisible(false);
+  };
   return (
     <div className="bg-white dark:bg-gray-800 rounded-md shadow-md p-4 mb-4">
       <h2 className="font-bold text-lg">{author}</h2>
@@ -45,7 +49,18 @@ const PostCard: React.FC<PostCardProps> = ({
         >
           {bookmarked ? "Unmark" : "Mark"}
         </button>
+        <button
+          onClick={() => setIsReportModalVisible(true)}
+          className={`px-4 py-2 w-28 rounded bg-gray-200 dark:bg-gray-700`}
+        >
+          Report
+        </button>
       </div>
+      <ReportModal
+        onSelectReport={reportHandler}
+        isOpen={isReportModalVisible}
+        onClose={() => setIsReportModalVisible(false)}
+      />
     </div>
   );
 };
